@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Test aplication!</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+  </head>
+  <body>
+
+<div class="container-fluid">
+	<div class="row">
+		<div id="main_window" class="col-md-3">
+		</div>
+		<div id="main_window_1" class="col-md-3">
+		</div>
+		<div id="modal_window" class="col-md-3">
+		</div>
+	</div>
+</div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+    <script type="text/javascript">
+    	(function () {
+			$.post(
+			"",
+			{
+				action: "main_parent_wiev"
+			},
+				main_parent_wiev_succes
+			);
+			function main_parent_wiev_succes(data)
+			{
+				// console.log(data);
+				var jdata = data != "" ? $.parseJSON(data) : {};
+				console.log(jdata);
+				if (jQuery.isEmptyObject(jdata)==true) {
+		   			$("#main_window").empty();
+		   			$("#modal_window").empty();
+		   			$("#modal_window").append("<div class='modal fade' id='myModal' role='dialog'> <div class='modal-dialog modal-sm'> <div class='modal-content'> <div class='modal-header'> <button type='button' class='close' data-dismiss='modal'>&times;</button> <h4 class='modal-title'>Введите данные</h4> </div> <div class='modal-body'> <h5>Введите название обьекта</h5> <input type='text' id='object_name'</div> <div class='modal-footer'> <button type='button' onclick='insert_new_object(0)' class='btn btn-default' data-dismiss='modal'>Сохранить</button> </div> </div> </div> </div>");
+		   			$("#main_window").append("<input type='button' value='Добавить запись' class='btn btn-primary btn-md' data-toggle='modal' data-target='#myModal'/>");
+				}
+				else{
+					$("#main_window").empty();
+					$("#modal_window").empty();
+		   			$("#modal_window").append("<div class='modal fade' id='myModal' role='dialog'> <div class='modal-dialog modal-sm'> <div class='modal-content'> <div class='modal-header'> <button type='button' class='close' data-dismiss='modal'>&times;</button> <h4 class='modal-title'>Введите данные</h4> </div> <div class='modal-body'> <h5>Введите название обьекта</h5> <input type='text' id='object_name'</div> <div class='modal-footer'> <button type='button' onclick='insert_new_object(0)' class='btn btn-default' data-dismiss='modal'>Сохранить</button> </div> </div> </div> </div>");
+		   			$.each(jdata,function(index, value){
+						$("#main_window").append("<div><input type='button' value='"+value['element_name']+"' onclick='create_brench("+value['id']+")' class='btn btn-primary btn-md'/></div>");
+					});
+		   			$("#main_window").append("<div><input type='button' value='Добавить запись' class='btn btn-primary btn-md' data-toggle='modal' data-target='#myModal'/></div>");
+				}	
+			}
+		}());
+		function create_brench(parent_id_for_child){
+			$.post(
+			"",
+			{
+				action: "create_brench",
+				parent_id: parent_id_for_child
+			},
+				create_brench_succes
+			);
+			function create_brench_succes(data)
+			{
+				// console.log(data);
+				var jdata = data != "" ? $.parseJSON(data) : {};
+				console.log(jdata);
+				if (jQuery.isEmptyObject(jdata)==true) {
+					$("#modal_window").empty();
+		   			$("#modal_window").append("<div class='modal fade' id='new_myModal' role='dialog'> <div class='modal-dialog modal-sm'> <div class='modal-content'> <div class='modal-header'> <button type='button' class='close' data-dismiss='modal'>&times;</button> <h4 class='modal-title'>Введите данные</h4> </div> <div class='modal-body'> <h5>Введите название обьекта</h5> <input type='text' id='object_name'</div> <div class='modal-footer'> <button type='button' onclick='insert_new_object("+parent_id_for_child+")' class='btn btn-default' data-dismiss='modal'>Сохранить</button> </div> </div> </div> </div>");
+		   			$("#main_window_1").append("<span><input type='button' value='Добавить запись' class='btn btn-primary btn-md' data-toggle='modal' data-target='#new_myModal'/></span>");
+				}
+				else{
+					$("#modal_window").empty();
+		   			$("#modal_window").append("<div class='modal fade' id='myModal' role='dialog'> <div class='modal-dialog modal-sm'> <div class='modal-content'> <div class='modal-header'> <button type='button' class='close' data-dismiss='modal'>&times;</button> <h4 class='modal-title'>Введите данные</h4> </div> <div class='modal-body'> <h5>Введите название обьекта</h5> <input type='text' id='object_name'</div> <div class='modal-footer'> <button type='button' onclick='insert_new_object("+parent_id_for_child+")' class='btn btn-default' data-dismiss='modal'>Сохранить</button> </div> </div> </div> </div>");
+		   			$("#main_window_1").append("<span id='new_brench_span'></span>");
+		   			$.each(jdata,function(index, value){
+						$("#new_brench_span").append("<div><input type='button' value='"+value['element_name']+"' onclick='create_brench("+value['id']+")' class='btn btn-primary btn-md'/></div>");
+					});
+		   			$("#new_brench_span").append("<div><input type='button' value='Добавить запись' class='btn btn-primary btn-md' data-toggle='modal' data-target='#myModal'/></div>");
+			}
+		}
+	}
+		function insert_new_object(parent_id){
+			$.post(
+			"",
+			{
+				action: "insert_new_object",
+				name: $("#object_name").val(),
+				parent_id: parent_id  
+			},
+				insert_new_object_succes
+			);
+			function insert_new_object_succes(data)
+			{
+				location.reload();
+				console.log(data);
+			}
+		}
+    </script>
+  </body>
+</html>
